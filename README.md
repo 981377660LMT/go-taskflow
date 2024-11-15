@@ -36,7 +36,7 @@ A static DAG (Directed Acyclic Graph) task computing framework for Go, inspired 
 ## Example
 import latest version: `go get -u github.com/noneback/go-taskflow`
 
-https://github.com/noneback/go-taskflow/blob/e2a5d2ead9f29b3601e21626d89b46759bc4a211/examples/conditional/condition.go#L1-L97
+https://github.com/noneback/go-taskflow/blob/2b3889035dd159f06ff0fe222371a3e92d11b306/examples/conditional/condition.go#L1-L97
 
 ## Understand Condition Task Correctly
 Condition Node is special in [taskflow-cpp](https://github.com/taskflow/taskflow). It not only enrolls in Condition Control but also in Looping.
