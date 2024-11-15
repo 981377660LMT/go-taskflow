@@ -5,8 +5,7 @@
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 
-
-A static DAG (Directed Acyclic Graph) task computing framework for Go, inspired by [taskflow-cpp](https://github.com/taskflow/taskflow), with Go's native capabilities and simplicity, suitable for complex dependency management in concurrent tasks.
+A taskflow-like General-purpose Task-parallel Programming Framework with an integrated visualizer and profiler for Go, inspired by [taskflow-cpp](https://github.com/taskflow/taskflow), with Go's native capabilities and simplicity, suitable for complex dependency management in concurrent tasks.
 
 ## Feature
 - **High extensibility**: Easily extend the framework to adapt to various specific use cases.
