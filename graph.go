@@ -10,9 +10,9 @@ import (
 type eGraph struct { // execution graph
 	name          string
 	nodes         []*innerNode
-	joinCounter   *utils.RC
-	entries       []*innerNode
-	scheCond      *sync.Cond
+	joinCounter   *utils.RC    // 引用计数，用于跟踪未完成任务数
+	entries       []*innerNode // 入口节点(无前置依赖)
+	scheCond      *sync.Cond   // 调度条件变量
 	instancelized bool
 	canceled      atomic.Bool // only changes when task in graph panic
 }

@@ -20,11 +20,11 @@ type Executor interface {
 }
 
 type innerExecutorImpl struct {
-	concurrency uint
-	pool        *utils.Copool
-	wq          *utils.Queue[*innerNode]
-	wg          *sync.WaitGroup
-	profiler    *profiler
+	concurrency uint                     // 最大并发数
+	pool        *utils.Copool            // 协程池
+	wq          *utils.Queue[*innerNode] // 工作队列
+	wg          *sync.WaitGroup          // 等待组
+	profiler    *profiler                // 性能分析器
 }
 
 // NewExecutor return a Executor with a specified max goroutine concurrency(recommend a value bigger than Runtime.NumCPU)
@@ -48,6 +48,7 @@ func (e *innerExecutorImpl) Run(tf *TaskFlow) Executor {
 	return e
 }
 
+// 任务执行循环
 func (e *innerExecutorImpl) invokeGraph(g *eGraph, parentSpan *span) {
 	for {
 		g.scheCond.L.Lock()
@@ -66,6 +67,7 @@ func (e *innerExecutorImpl) invokeGraph(g *eGraph, parentSpan *span) {
 	}
 }
 
+// 任务完成后更新依赖计数，调度后续任务
 func (e *innerExecutorImpl) sche_successors(node *innerNode) {
 	candidate := make([]*innerNode, 0, len(node.successors))
 
@@ -176,6 +178,7 @@ func (e *innerExecutorImpl) invokeCondition(node *innerNode, parentSpan *span, p
 		}
 		// do choice and cancel others
 		node.state.Store(kNodeStateFinished)
+		// 只调度选择的路径
 		e.schedule(p.mapper[choice])
 	}
 }
@@ -219,6 +222,8 @@ func (e *innerExecutorImpl) schedule(nodes ...*innerNode) {
 	}
 }
 
+// scheduleGraph 对图进行初始化
+// 入口节点按优先级排序并添加到工作队列
 func (e *innerExecutorImpl) scheduleGraph(g *eGraph, parentSpan *span) {
 	g.setup()
 	slices.SortFunc(g.entries, func(i, j *innerNode) int {

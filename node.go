@@ -29,10 +29,10 @@ type innerNode struct {
 	successors  []*innerNode
 	dependents  []*innerNode
 	Typ         nodeType
-	ptr         interface{}
+	ptr         interface{} // 存储具体任务实现
 	rw          *sync.RWMutex
-	state       atomic.Int32
-	joinCounter *utils.RC
+	state       atomic.Int32 // 任务状态
+	joinCounter *utils.RC    // 入度计数器
 	g           *eGraph
 	priority    TaskPriority
 }
@@ -51,6 +51,7 @@ func (n *innerNode) setup() {
 		n.joinCounter.Increase()
 	}
 }
+
 func (n *innerNode) drop() {
 	// release every deps
 	for _, node := range n.successors {
